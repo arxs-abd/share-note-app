@@ -16,5 +16,6 @@ module.exports = {
 			username: 'admin',
 			password: '124',
 		},
+		invalidToken: '6d1caa70-595b-46bc-9818-ef152857cc88',
 	},
 }

@@ -2,8 +2,9 @@ const request = require('supertest')
 
 const { web: app } = require('../src/app/web')
 const { prismaClient } = require('../src/app/database')
-
 const { auth } = require('./payload')
+
+let token
 
 afterAll(async () => {
 	await prismaClient.user_ShareNote.deleteMany()
@@ -55,6 +56,23 @@ describe('POST /api/login [Login Testing]', () => {
 		expect(res.statusCode).toBe(200)
 		expect(res.body.status).toBe('success')
 		expect(res.body.data.token).toBeDefined()
-		console.log(res.body.data.token)
+		token = res.body.data.token
+	})
+})
+
+describe('POST /api/logout [Logout Testing]', () => {
+	const url = '/api/logout'
+	it('Should Fail to Logout Token Is Wrong', async () => {
+		const res = await request(app)
+			.post(url)
+			.set('Authorization', auth.invalidToken)
+		expect(res.statusCode).toBe(401)
+		expect(res.body.status).toBe('fail')
+	})
+	it('Should Success to Logout', async () => {
+		const res = await request(app).post(url).set('Authorization', token)
+		expect(res.statusCode).toBe(200)
+		expect(res.body.status).toBe('success')
+		expect(res.body.message).toBeDefined()
 	})
 })

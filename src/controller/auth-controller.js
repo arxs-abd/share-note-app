@@ -28,7 +28,22 @@ const login = async (req, res, next) => {
 	}
 }
 
+const logout = async (req, res, next) => {
+	try {
+		const id = req.user.id
+		await authService.logout(id)
+
+		return res.send({
+			status: 'success',
+			message: 'Logout Berhasil',
+		})
+	} catch (error) {
+		next(error)
+	}
+}
+
 module.exports = {
 	register,
 	login,
+	logout,
 }

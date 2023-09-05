@@ -1,22 +1,28 @@
-const jwt = require('jsonwebtoken')
-const config = require('../utils/config')
+const { prismaClient } = require('../app/database')
 
-const authenticate = (req, res, next) => {
-	const bearerToken = req.headers?.authorization
-	const token = bearerToken?.split(' ')[1] || req.cookies.authorization
+const authenticate = async (req, res, next) => {
+	const token = req.get('Authorization')
 	if (!token)
 		return res.status(401).send({
 			status: 'fail',
-			msg: 'Token Tidak ditemukan',
+			msg: 'Token tidak ditemukan',
 		})
-	jwt.verify(token, config.access_token, (err, result) => {
-		if (err)
-			return res.status(403).send({
-				status: 'fail',
-				msg: 'Token Tidak Valid',
-			})
-		next()
+
+	// Find User by Token
+	const user = await prismaClient.user_ShareNote.findFirst({
+		where: {
+			token,
+		},
 	})
+
+	if (!user)
+		return res.status(401).send({
+			status: 'fail',
+			msg: 'Token tidak valid',
+		})
+
+	req.user = user
+	next()
 }
 
 module.exports = {

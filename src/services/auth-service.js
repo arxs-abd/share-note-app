@@ -56,7 +56,20 @@ const login = async (request) => {
 	})
 }
 
+const logout = async (userId) => {
+	// Update Token to Null
+	return await prismaClient.user_ShareNote.update({
+		where: {
+			id: userId,
+		},
+		data: {
+			token: null,
+		},
+	})
+}
+
 module.exports = {
 	register,
 	login,
+	logout,
 }
