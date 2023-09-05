@@ -8,5 +8,13 @@ module.exports = {
 			username: '',
 			password: '12435678',
 		},
+		invalidUsernameUserPayload: {
+			username: 'root',
+			password: '12435678',
+		},
+		invalidPasswordUserPayload: {
+			username: 'admin',
+			password: '124',
+		},
 	},
 }
