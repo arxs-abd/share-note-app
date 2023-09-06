@@ -14,6 +14,21 @@ const add = async (req, res, next) => {
 	}
 }
 
+const getBySlug = async (req, res, next) => {
+	try {
+		const { slug } = req.params
+		const result = await noteService.getBySlug(slug)
+
+		return res.send({
+			status: 'success',
+			data: result,
+		})
+	} catch (error) {
+		next(error)
+	}
+}
+
 module.exports = {
 	add,
+	getBySlug,
 }

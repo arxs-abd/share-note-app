@@ -27,5 +27,6 @@ module.exports = {
 			title: '',
 			content: 'Siapkah bahan bahan terlebih dahulu sebelum memulai',
 		},
+		invalidSlug: 'f04f5b69-cabe-42bb-8bfa-17ed7e989cfe',
 	},
 }
